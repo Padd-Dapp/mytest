@@ -4,7 +4,7 @@ import streamlit as st
 st.set_page_config(page_title="销售仪表板", page_icon="📊", layout="wide")
 
 def get_dataframe_from_excel():
-    df = pd.read_excel('E:/streamlit_env/xm/supermarket_sales.xlsx',
+    df = pd.read_excel('supermarket_sales.xlsx',
         sheet_name='销售数据',
         skiprows=1,
         index_col='订单号',
