@@ -2,6 +2,10 @@ import streamlit as st
 import pandas as pd
 import pickle
 
+st.set_page_config(
+    page_title="医疗费用预测应用", 
+    page_icon="🏥", 
+    )
 
 def introduce_page():
     """当选择建立页面时，将呈现该函数的内容"""
@@ -52,8 +56,14 @@ def predict_page():
         region = st.selectbox('区域', ('东南部', '西南部', '东北部', '西北部'))
         submitted = st.form_submit_button('预测费用')
     # 加载模型
-    with open('rfr_model.pkl', 'rb') as f:
-        rfr_model = pickle.load(f)
+    import os
+    model_path = 'rfr_model.pkl'
+    if os.path.exists(model_path):
+        with open(model_path, 'rb') as f:
+            rfr_model = pickle.load(f)
+    else:
+        st.error(f"模型文件 {model_path} 不存在，请确保该文件已上传到Cloud环境")
+        st.stop()
 
     if submitted:
         # 准备输入数据
@@ -90,11 +100,6 @@ def predict_page():
         st.write(f'根据您输入的数据，预测该客户的医疗费用是：', round(predict_result,2))
     
     st.write("技术支持：email：:support@example.com")
-
-st.set_page_config(
-    page_title="医疗费用预测应用", 
-    page_icon="🏥", 
-    )
 
 nav = st.sidebar.radio("导航", ["简历", "预测医疗费用"])
 
