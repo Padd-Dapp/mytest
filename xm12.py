@@ -8,6 +8,10 @@ import os
 import pickle
 from sklearn.ensemble import RandomForestRegressor
 
+# 设置Matplotlib中文显示
+plt.rcParams['font.sans-serif'] = ['SimHei']  # 设置中文显示字体为SimHei
+plt.rcParams['axes.unicode_minus'] = False  # 解决负号显示问题
+
 # 设置页面配置
 st.set_page_config(
     page_title="学生成绩分析与预测系统",
