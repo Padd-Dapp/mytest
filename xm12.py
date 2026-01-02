@@ -405,18 +405,26 @@ def predict_page():
             '作业完成率': homework_completion
         }
         
+        # 确保所有模型期望的特征都存在于用户输入中
+        model_features = model.feature_names_in_
+        
         # 处理性别
-        for gender_col in X.columns:
+        for gender_col in model_features:
             if gender_col.startswith('性别_'):
                 user_input[gender_col] = 1 if gender_col == f'性别_{gender}' else 0
         
         # 处理专业
-        for major_col in X.columns:
+        for major_col in model_features:
             if major_col.startswith('专业_'):
                 user_input[major_col] = 1 if major_col == f'专业_{major}' else 0
         
-        # 转换为DataFrame
-        user_df = pd.DataFrame([user_input], columns=X.columns)
+        # 确保所有模型特征都有值
+        for feature in model_features:
+            if feature not in user_input:
+                user_input[feature] = 0
+        
+        # 转换为DataFrame，使用模型的特征列名
+        user_df = pd.DataFrame([user_input], columns=model_features)
         
         # 进行预测
         prediction = model.predict(user_df)
